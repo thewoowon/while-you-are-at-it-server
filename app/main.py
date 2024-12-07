@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from app.api.v1.api import api_router
@@ -5,6 +6,13 @@ from app.core.config import settings
 from dotenv import load_dotenv
 
 load_dotenv()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("Lifespan: Starting up...")
+    yield
+    print("Lifespan: Shutting down...")
 
 app = FastAPI(
     title=settings.PROJECT_NAME, openapi_url=f"{
