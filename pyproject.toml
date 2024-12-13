@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "while-you-are-at-it-server"
 version = "0.1.0"
-description = "가는김에 서버입니다"
+description = ""
 authors = ["thewoowon <thewoowon@naver.com>"]
 license = "MIT"
 readme = "README.md"
@@ -9,24 +9,15 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 fastapi = "^0.115.6"
-uvicorn = "^0.29.0"
-apscheduler = "^3.10.4"
-joblib = "^1.4.2"
-scikit-learn = "1.2.1"
-feedparser = "^6.0.11"
-sqlalchemy = "^2.0.30"
-asyncpg = "^0.29.0"
-asyncio = "^3.4.3"
-greenlet = "^3.0.3"
-pydantic = "^2.7.2"
-pydantic-settings = "^2.2.1"
-python-dotenv = "^1.0.1"
-aiomysql = "^0.2.0"
-pytz = "^2024.1"
+scikit-learn = "^1.5.2"
+uvicorn = "^0.32.1"
+pydantic-settings = "^2.6.1"
+sqlalchemy = "^2.0.36"
+python-decouple = "^3.8"
+alembic = "^1.14.0"
+aiosqlite = "^0.20.0"
+greenlet = "^3.1.1"
 
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.2.1"
 
 [build-system]
 requires = ["poetry-core"]
