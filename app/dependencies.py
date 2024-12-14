@@ -1,8 +1,11 @@
-# app/dependencies.py
-from typing import AsyncGenerator
-from app.db.session import SessionLocal
+from typing import Generator
+from sqlalchemy.orm import Session
+from app.db.session import SyncSessionLocal
 
 
-async def get_db() -> AsyncGenerator:
-    async with SessionLocal() as session:
-        yield session
+def get_db() -> Generator[Session, None, None]:
+    db = SyncSessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
