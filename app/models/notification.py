@@ -9,4 +9,4 @@ class Notification(Base):
 
     title = Column(String, nullable=False)
     contents = Column(String, nullable=False)
-    type = Column(String, nullable=False)
+    notification_type = Column(String, nullable=False)

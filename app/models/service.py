@@ -12,7 +12,7 @@ class Service(Base):
     unit = Column(String, nullable=False)
     price = Column(Integer, nullable=False)
     discount_rate = Column(Integer, nullable=False)
-    type = Column(String, nullable=False)
+    service_type = Column(String, nullable=False)
     store_id = Column(Integer, ForeignKey("store.id"))
 
     # 관계 설정

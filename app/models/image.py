@@ -8,7 +8,7 @@ class Image(Base):
     __tablename__ = "image"
 
     url = Column(String, nullable=False)
-    type = Column(String, nullable=False)
+    image_type = Column(String, nullable=False)
     order_id = Column(Integer, ForeignKey("order.id"))
 
     # 관계 설정

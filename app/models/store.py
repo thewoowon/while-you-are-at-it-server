@@ -9,6 +9,6 @@ class Store(Base):
 
     name = Column(String, index=True)
     address = Column(String, nullable=False)
-    type = Column(String, nullable=False)
+    store_type = Column(String, nullable=False)
     business_hours = Column(String, nullable=False)
     phone_number = Column(String, nullable=False)

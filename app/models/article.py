@@ -9,7 +9,7 @@ class Article(Base):
 
     title = Column(String, nullable=False)
     contents = Column(String, nullable=False)
-    type = Column(String, nullable=False)
+    article_type = Column(String, nullable=False)
     pick_up_location = Column(String, nullable=False)
     pick_up_time = Column(String, nullable=False)
     destination = Column(String, nullable=False)

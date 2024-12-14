@@ -9,7 +9,7 @@ class User(Base):
 
     name = Column(String, nullable=False)
     nickname = Column(String, nullable=True)
-    email = Column(String, unique=True, index=True)
+    email = Column(String, unique=True, index=True, nullable=False)
     phone_number = Column(String, nullable=False)
     address = Column(String, nullable=True)
     src = Column(String, nullable=True)
