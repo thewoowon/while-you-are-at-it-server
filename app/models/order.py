@@ -7,8 +7,8 @@ from app.db.base import Base
 class Order(Base):
     __tablename__ = "order"
 
-    order_type = Column(String, nullable=False)
     description = Column(String, nullable=False)
+    order_type = Column(String, nullable=False)
     store_id = Column(Integer, ForeignKey("store.id"))
     user_id = Column(Integer, ForeignKey("user.id"))
     service_id = Column(Integer, ForeignKey("service.id"))

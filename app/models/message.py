@@ -7,10 +7,10 @@ from app.db.base import Base
 class Message(Base):
     __tablename__ = "message"
 
+    message = Column(String, nullable=False)
+    sequence = Column(Integer, nullable=False)
     sender_id = Column(Integer, ForeignKey("user.id"))
     chat_id = Column(Integer, ForeignKey("chat.id"))
-    sequence = Column(Integer, nullable=False)
-    message = Column(String, nullable=False)
 
     # 관계 설정
     sender = relationship("User")

@@ -17,3 +17,4 @@ class User(Base):
     # 관계 설정
     articles = relationship("Article", back_populates="user")
     chats = relationship("Chat", back_populates="founder")
+    notifications = relationship("Notification", back_populates="user")
