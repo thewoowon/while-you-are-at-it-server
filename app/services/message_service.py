@@ -13,5 +13,9 @@ def delete_message(db: Session, ):
     pass
 
 
+def get_message_by_chat_id(db: Session, ):
+    pass
+
+
 def get_message_by_id(db: Session, ):
     pass

@@ -15,3 +15,7 @@ def delete_delivery(db: Session, ):
 
 def get_delivery_by_id(db: Session, ):
     pass
+
+
+def get_delivery_by_user_id(db: Session, ):
+    pass

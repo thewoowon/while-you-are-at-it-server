@@ -15,5 +15,9 @@ def delete_article(db: Session, ):
     pass
 
 
-def get_article_by_id(db: Session, ):
+def get_article_by_id(db: Session, user_id: int):
+    pass
+
+
+def get_article_by_location(db: Session, article_id: int):
     pass
