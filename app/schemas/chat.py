@@ -2,12 +2,11 @@ from pydantic import BaseModel
 
 
 class ChatBase(BaseModel):
-    name: str
-    address: str
+    pass
 
 
 class ChatCreate(ChatBase):
-    password: str
+    pass
 
 
 class ChatResponse(ChatBase):

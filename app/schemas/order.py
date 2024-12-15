@@ -2,12 +2,16 @@ from pydantic import BaseModel
 
 
 class OrderBase(BaseModel):
-    name: str
-    address: str
+    description: str
+    order_type: str
 
 
 class OrderCreate(OrderBase):
-    password: str
+    pass
+
+
+class OrderUpdate(OrderBase):
+    pass
 
 
 class OrderResponse(OrderBase):

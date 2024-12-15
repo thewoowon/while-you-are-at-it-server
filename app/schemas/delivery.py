@@ -2,12 +2,17 @@ from pydantic import BaseModel
 
 
 class DeliveryBase(BaseModel):
-    name: str
-    address: str
+    request_date: str
+    request_time: str
 
 
 class DeliveryCreate(DeliveryBase):
-    password: str
+    pass
+
+
+class DeliveryUpdate(DeliveryBase):
+    request_date: str
+    request_time: str
 
 
 class DeliveryResponse(DeliveryBase):

@@ -2,12 +2,12 @@ from pydantic import BaseModel
 
 
 class ImageBase(BaseModel):
-    name: str
-    address: str
+    url: str
+    image_type: str
 
 
 class ImageCreate(ImageBase):
-    password: str
+    pass
 
 
 class ImageResponse(ImageBase):

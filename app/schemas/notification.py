@@ -2,12 +2,13 @@ from pydantic import BaseModel
 
 
 class NotificationBase(BaseModel):
-    name: str
-    address: str
+    title: str
+    contents: str
+    notification_type: str
 
 
 class NotificationCreate(NotificationBase):
-    password: str
+    pass
 
 
 class NotificationResponse(NotificationBase):

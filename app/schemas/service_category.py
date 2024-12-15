@@ -2,15 +2,19 @@ from pydantic import BaseModel
 
 
 class ServiceCategoryBase(BaseModel):
+    code: str
     name: str
-    address: str
 
 
-class StoreCreate(ServiceCategoryBase):
-    password: str
+class ServiceCategoryCreate(ServiceCategoryBase):
+    pass
 
 
-class StoreResponse(ServiceCategoryBase):
+class ServiceCategoryUpdate(ServiceCategoryBase):
+    pass
+
+
+class ServiceCategoryResponse(ServiceCategoryBase):
     id: int
 
     class Config:

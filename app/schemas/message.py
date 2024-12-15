@@ -2,12 +2,16 @@ from pydantic import BaseModel
 
 
 class MessageBase(BaseModel):
-    name: str
-    address: str
+    message: str
+    sequence: str
 
 
 class MessageCreate(MessageBase):
-    password: str
+    pass
+
+
+class MessageUpdate(MessageBase):
+    message: str
 
 
 class MessageResponse(MessageBase):
