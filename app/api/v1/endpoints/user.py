@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.schemas.user import UserCreate, UserUpdate, UserResponse
 from app.services.user_service import create_user, get_user_by_id, update_user
 from app.dependencies import get_db
+from core.security import get_current_user
 
 router = APIRouter()
 
@@ -15,8 +16,8 @@ def create(user: UserCreate, db: Session = Depends(get_db)):
     return create_user(db=db, user=user)
 
 
-@router.get("/{user_id}", response_model=UserResponse)
-def read(user_id: int, db: Session = Depends(get_db)):
+@router.get("/me", response_model=UserResponse)
+def read(user_id: str = Depends(get_current_user), db: Session = Depends(get_db)):
     """
     Get user by ID
     """
@@ -26,8 +27,8 @@ def read(user_id: int, db: Session = Depends(get_db)):
     return user
 
 
-@router.put("/{user_id}", response_model=UserResponse)
-def update(user_id: int, user: UserUpdate, db: Session = Depends(get_db)):
+@router.put("/me", response_model=UserResponse)
+def update(user: UserUpdate, user_id: str = Depends(get_current_user), db: Session = Depends(get_db)):
     """
     Update user by ID
     """
@@ -37,8 +38,8 @@ def update(user_id: int, user: UserUpdate, db: Session = Depends(get_db)):
     return update_user(db=db, user=user)
 
 
-@router.delete("/{user_id}")
-def delete(user_id: int, db: Session = Depends(get_db)):
+@router.delete("/me")
+def delete(user_id: str = Depends(get_current_user), db: Session = Depends(get_db)):
     """ 
     Delete user by ID
     """

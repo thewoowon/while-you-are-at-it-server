@@ -10,15 +10,15 @@
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas.store import StoreCreate, StoreResponse
-from app.services.store_service import create_store, get_store_by_id, update_store
+from app.schemas.review import ReviewCreate, ReviewResponse
+from app.services.review_service import create_review, get_review_by_id, update_review
 from app.dependencies import get_db
 
 router = APIRouter()
 
 
-def create(db: Session, store: StoreCreate):
-    return create_store(db=db, store=store)
+def create(db: Session, store: ReviewCreate):
+    return create_review(db=db, store=store)
 
 
 def read(user_id: int, db: Session = Depends(get_db)):

@@ -2,22 +2,22 @@
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas.store import StoreCreate, StoreResponse
-from app.services.store_service import create_store, get_store_by_id, update_store
+from app.schemas.service_category import ServiceCategoryCreate, ServiceCategoryUpdate, ServiceCategoryResponse
+from app.services.service_category_service import create_service_category, get_service_category_by_id, update_service_category
 from app.dependencies import get_db
 
 router = APIRouter()
 
 
-def create(db: Session, store: StoreCreate):
-    return create_store(db=db, store=store)
+def create(db: Session, store: ServiceCategoryCreate):
+    return create_service_category(db=db, store=store)
 
 
 def read(user_id: int, db: Session = Depends(get_db)):
     pass
 
 
-def update(user_id: int, user: StoreUpdate, db: Session = Depends(get_db)):
+def update(user_id: int, user: ServiceCategoryUpdate, db: Session = Depends(get_db)):
     pass
 
 

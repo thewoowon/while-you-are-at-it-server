@@ -1,37 +1,32 @@
-# 이미지 생성
-# 이미지 업로드
-# 이미지 삭제
-# 이미지 수정
-# 이미지 조회
-# 이미지 리스트 조회
-# 이미지 좋아요
-# 이미지 좋아요 취소
-# 이미지 댓글 생성
-# 이미지 댓글 삭제
-# 이미지 댓글 수정
-# 이미지 댓글 조회
-# 이미지 댓글 리스트 조회
-
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas.store import StoreCreate, StoreResponse
-from app.services.store_service import create_store, get_store_by_id, update_store
+from app.schemas.image import ImageCreate, ImageResponse
+from app.services.image_service import create_image, get_image_by_id
 from app.dependencies import get_db
 
 router = APIRouter()
 
 
-def create(db: Session, store: StoreCreate):
-    return create_store(db=db, store=store)
+@router.post("/", response_model=ImageResponse)
+def create(db: Session, image: ImageCreate):
+    return create_image(db=db, image=image)
 
 
-def read(user_id: int, db: Session = Depends(get_db)):
+@router.get("/", response_model=ImageResponse)
+def read_all(db: Session = Depends(get_db)):
     pass
 
 
-def update(user_id: int, user: StoreUpdate, db: Session = Depends(get_db)):
+@router.get("/{image_id}", response_model=ImageResponse)
+def read_one(image_id: int, db: Session = Depends(get_db)):
     pass
 
 
+@router.put("/{image_id}", response_model=ImageResponse)
 def delete(user_id: int, db: Session = Depends(get_db)):
-    pass
+    db_image = get_image_by_id(db, user_id)
+    if db_image is None:
+        raise HTTPException(status_code=404, detail="Image not found")
+    db.delete(db_image)
+    db.commit()
+    return {"message": "Image deleted successfully"}

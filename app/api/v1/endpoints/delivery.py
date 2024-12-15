@@ -1,28 +1,42 @@
-# 전달 생성
-# 전달 조회
-# 전달 수정
-# 전달 삭제
-
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas.store import StoreCreate, StoreResponse
-from app.services.store_service import create_store, get_store_by_id, update_store
+from app.schemas.delivery import DeliveryCreate, DeliveryUpdate, DeliveryResponse
+from app.services.delivery_service import create_delivery, get_delivery_by_id, get_delivery_by_user_id, update_delivery
 from app.dependencies import get_db
+from core.security import get_current_user
+
 
 router = APIRouter()
 
 
-def create(db: Session, store: StoreCreate):
-    return create_store(db=db, store=store)
+@router.post("/", response_model=DeliveryResponse)
+def create(db: Session, delivery: DeliveryCreate):
+    return create_delivery(db=db, delivery=delivery)
 
 
-def read(user_id: int, db: Session = Depends(get_db)):
-    pass
+@router.get("/", response_model=DeliveryResponse)
+def read_all(user_id: str = Depends(get_current_user), db: Session = Depends(get_db)):
+    return get_delivery_by_user_id(db=db, user_id=user_id)
 
 
-def update(user_id: int, user: StoreUpdate, db: Session = Depends(get_db)):
-    pass
+@router.get("/{delivery_id}", response_model=DeliveryResponse)
+def read_one(delivery_id: int, db: Session = Depends(get_db)):
+    return get_delivery_by_id(db=db, delivery_id=delivery_id)
 
 
-def delete(user_id: int, db: Session = Depends(get_db)):
-    pass
+@router.put("/{delivery_id}", response_model=DeliveryResponse)
+def update(delivery_id: int, delivery: DeliveryUpdate, db: Session = Depends(get_db)):
+    db_delivery = get_delivery_by_id(db=db, delivery_id=delivery_id)
+    if not db_delivery:
+        raise HTTPException(status_code=404, detail="Delivery not found")
+    return update_delivery(db=db, delivery=delivery)
+
+
+@router.delete("/{delivery_id}")
+def delete(delivery_id: int, db: Session = Depends(get_db)):
+    db_delivery = get_delivery_by_id(db=db, delivery_id=delivery_id)
+    if not db_delivery:
+        raise HTTPException(status_code=404, detail="Delivery not found")
+    db.delete(db_delivery)
+    db.commit()
+    return {"message": "Delivery deleted successfully"}

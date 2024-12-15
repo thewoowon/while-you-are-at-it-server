@@ -7,7 +7,7 @@
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas.store import StoreCreate, StoreResponse
+from app.schemas.store import StoreCreate, StoreUpdate, StoreResponse
 from app.services.store_service import create_store, get_store_by_id, update_store
 from app.dependencies import get_db
 
