@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 def create(db: Session, store: ServiceCategoryCreate):
-    return create_service_category(db=db, store=store)
+    pass
 
 
 def read(user_id: int, db: Session = Depends(get_db)):

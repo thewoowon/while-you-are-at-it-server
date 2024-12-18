@@ -15,19 +15,19 @@ def create(message: MessageCreate, chat_id: int, user_id: int = Depends(get_db),
 
 @router.get("/{chat_id}", response_model=List[MessageResponse])
 def read_all(chat_id: int, db: Session = Depends(get_db)):
-    return get_message_by_chat_id(db, chat_id)
+    return get_message_by_chat_id(db=db, chat_id=chat_id)
 
 
 @router.get("/{message_id}", response_model=MessageResponse)
 def read_one(message_id: int, db: Session = Depends(get_db)):
-    return get_message_by_id(db, message_id)
+    return get_message_by_id(db=db, message_id=message_id)
 
 
 @router.put("/{message_id}", response_model=MessageResponse)
 def update(message_id: int, message: MessageUpdate, db: Session = Depends(get_db)):
-    return update_message(db, message_id, message)
+    return update_message(db=db, message_id=message_id, message=message)
 
 
 @router.delete("/{message_id}")
 def delete(message_id: int, db: Session = Depends(get_db)):
-    return delete_message(db, message_id)
+    return delete_message(db=db, message_id=message_id)

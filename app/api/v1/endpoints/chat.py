@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 @router.post("/", response_model=ChatResponse)
-def create(attendant_id: int, db: Session = Depends(get_db), user_id: int = Depends(get_current_user),):
+def create(attendant_id: int, db: Session = Depends(get_db), user_id: int = Depends(get_current_user)):
     return create_chat(db=db, attendant_id=attendant_id, user_id=user_id)
 
 
