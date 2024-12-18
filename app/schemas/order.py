@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 
 class OrderBase(BaseModel):
@@ -10,8 +11,9 @@ class OrderCreate(OrderBase):
     pass
 
 
-class OrderUpdate(OrderBase):
-    pass
+class OrderUpdate(BaseModel):
+    description: Optional[str] = None
+    order_type: Optional[str] = None
 
 
 class OrderResponse(OrderBase):

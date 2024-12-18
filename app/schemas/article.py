@@ -19,7 +19,7 @@ class ArticleCreate(ArticleBase):
     pass
 
 
-class ArticleUpdate(ArticleBase):
+class ArticleUpdate(BaseModel):
     title: Optional[str] = None
     contents: Optional[str] = None
     article_type: Optional[str] = None

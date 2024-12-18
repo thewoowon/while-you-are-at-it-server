@@ -16,12 +16,7 @@ class ServiceCreate(ServiceBase):
 
 
 class ServiceUpdate(ServiceBase):
-    name: Optional[str] = None
-    description: Optional[str] = None
-    unit: Optional[str] = None
-    price: Optional[str] = None
-    discount_rate: Optional[str] = None
-    service_type: Optional[str] = None
+    pass
 
 
 class ServiceResponse(ServiceBase):

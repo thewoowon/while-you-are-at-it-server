@@ -10,7 +10,7 @@ class MessageCreate(MessageBase):
     pass
 
 
-class MessageUpdate(MessageBase):
+class MessageUpdate(BaseModel):
     message: str
 
 

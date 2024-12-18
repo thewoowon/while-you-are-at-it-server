@@ -12,7 +12,7 @@ class ReviewCreate(ReviewBase):
     store_id: int
 
 
-class ReviewUpdate(ReviewBase):
+class ReviewUpdate(BaseModel):
     title: Optional[str] = None
     contents: Optional[str] = None
     score: Optional[str] = None

@@ -14,7 +14,7 @@ class StoreCreate(StoreBase):
     pass
 
 
-class StoreUpdate(StoreBase):
+class StoreUpdate(BaseModel):
     name: Optional[str] = None
     address: Optional[str] = None
     store_type: Optional[str] = None
