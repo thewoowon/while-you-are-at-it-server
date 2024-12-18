@@ -8,8 +8,8 @@ from fastapi.responses import JSONResponse
 def create_review(db: Session, review: ReviewCreate, user_id: int, store_id: int):
     db_review = Review(
         title=review.title,
-        content=review.content,
-        rating=review.rating,
+        contents=review.contents,
+        score=review.score,
         user_id=user_id,
         store_id=store_id
     )
