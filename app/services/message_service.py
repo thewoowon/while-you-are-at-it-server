@@ -18,12 +18,11 @@ def create_message(db: Session, message: MessageCreate, chat_id: int, user_id: i
     return MessageResponse.model_validate(db_message)
 
 
-def update_message(db: Session, message: MessageCreate, chat_id: int, message_id: int):
+def update_message(db: Session, message: MessageUpdate, message_id: int):
     db_message = db.query(Message).filter(Message.id == message_id).first()
     if db_message is None:
         raise HTTPException(status_code=404, detail="Message not found")
     db_message.message = message.message if message.message else db_message.message
-    db_message.sequence = message.sequence if message.sequence else db_message.sequence
     db_message
     db.commit()
     db.refresh(db_message)

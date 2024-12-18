@@ -6,8 +6,11 @@ from fastapi.responses import JSONResponse
 
 
 def create_order(db: Session, order: OrderCreate, user_id: int, store_id: int, service_id: int):
-    db_order = Order(**order.model_dump(), user_id=user_id,
-                     store_id=store_id, service_id=service_id)
+    db_order = Order(
+        description=order.description,
+        order_type=order.order_type,
+        user_id=user_id,
+        store_id=store_id, service_id=service_id)
     db.add(db_order)
     db.commit()
     db.refresh(db_order)
@@ -18,14 +21,8 @@ def update_order(db: Session, order: OrderUpdate, order_id: int):
     db_order = db.query(Order).filter(Order.id == order_id).first()
     if not db_order:
         raise HTTPException(status_code=404, detail="Order not found")
-    db_order.status = order.status if order.status else db_order.status
-    db_order.payment_method = order.payment_method if order.payment_method else db_order.payment_method
-    db_order.payment_status = order.payment_status if order.payment_status else db_order.payment_status
-    db_order.delivery_date = order.delivery_date if order.delivery_date else db_order.delivery_date
-    db_order.delivery_time = order.delivery_time if order.delivery_time else db_order.delivery_time
-    db_order.delivery_address = order.delivery_address if order.delivery_address else db_order.delivery_address
-    db_order.delivery_fee = order.delivery_fee if order.delivery_fee else db_order.delivery_fee
-    db_order.total_price = order.total_price if order.total_price else db_order.total_price
+    db_order.description = order.description if order.description else db_order.description
+    db_order.order_type = order.order_type if order.order_type else db_order.order_type
     db.commit()
     db.refresh(db_order)
     return OrderResponse.model_validate(db_order)
@@ -47,8 +44,8 @@ def get_order_by_id(db: Session, order_id: int):
     return OrderResponse.model_validate(db_order)
 
 
-def get_order_by_store_id(db: Session, order_id: int):
-    db_order = db.query(Order).filter(Order.id == order_id).first()
+def get_order_by_store_id(db: Session, store_id: int):
+    db_order = db.query(Order).filter(Order.store_id == store_id).all()
     if not db_order:
         raise HTTPException(status_code=404, detail="Order not found")
     return OrderResponse.model_validate(db_order)
