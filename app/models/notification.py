@@ -10,6 +10,7 @@ class Notification(Base):
     title = Column(String, nullable=False)
     contents = Column(String, nullable=False)
     notification_type = Column(String, nullable=False)
+    status = Column(String, nullable=False)
     user_id = Column(Integer, ForeignKey("user.id"))
 
     # 관계 설정
