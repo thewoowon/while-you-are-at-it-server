@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.schemas.user import UserCreate, UserUpdate, UserResponse
 from app.services.user_service import create_user, get_user_by_id, update_user
 from app.dependencies import get_db
-from core.security import get_current_user
+from app.core.security import get_current_user
 
 router = APIRouter()
 
@@ -21,10 +21,7 @@ def read(user_id: str = Depends(get_current_user), db: Session = Depends(get_db)
     """
     Get user by ID
     """
-    user = get_user_by_id(db=db, user_id=user_id)
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user
+    return get_user_by_id(db=db, user_id=user_id)
 
 
 @router.put("/me", response_model=UserResponse)

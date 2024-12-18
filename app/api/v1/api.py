@@ -16,8 +16,8 @@ api_router.include_router(
     notification.router, prefix="/notifications", tags=["notifications"])
 api_router.include_router(order.router, prefix="/orders", tags=["orders"])
 api_router.include_router(review.router, prefix="/reviews", tags=["reviews"])
-api_router.include_router(service_category.router,
-                          prefix="/service_categories", tags=["service_categories"])
+# api_router.include_router(service_category.router,
+#                           prefix="/service_categories", tags=["service_categories"])
 api_router.include_router(
     service.router, prefix="/services", tags=["services"])
 api_router.include_router(store.router, prefix="/stores", tags=["stores"])

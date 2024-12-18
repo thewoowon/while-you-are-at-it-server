@@ -5,26 +5,31 @@
 # 가게 서비스 삭제
 # 가게 서비스 조회
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.schemas.store import StoreCreate, StoreUpdate, StoreResponse
-from app.services.store_service import create_store, get_store_by_id, update_store
+from app.services.store_service import create_store, get_store_by_id, update_store, delete_store
 from app.dependencies import get_db
+from typing import List
 
 router = APIRouter()
 
 
-def create(db: Session, store: StoreCreate):
+@router.post("/", response_model=StoreResponse)
+def create(store: StoreCreate, db: Session = Depends(get_db)):
     return create_store(db=db, store=store)
 
 
-def read(user_id: int, db: Session = Depends(get_db)):
-    pass
+@router.get("/{store_id}", response_model=StoreResponse)
+def read_one(store_id: int, db: Session = Depends(get_db)):
+    return get_store_by_id(db=db, store_id=store_id)
 
 
-def update(user_id: int, user: StoreUpdate, db: Session = Depends(get_db)):
-    pass
+@router.get("/", response_model=List[StoreResponse])
+def update(store_id: int, store: StoreUpdate, db: Session = Depends(get_db)):
+    return update_store(db=db, store_id=store_id, store=store)
 
 
-def delete(user_id: int, db: Session = Depends(get_db)):
-    pass
+@router.delete("/{store_id}")
+def delete(store_id: int, db: Session = Depends(get_db)):
+    return delete_store(db=db, store_id=store_id)
