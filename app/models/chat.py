@@ -7,8 +7,8 @@ from app.db.base import Base
 class Chat(Base):
     __tablename__ = "chat"
 
-    founder_id = Column(Integer, ForeignKey("user.id"))
-    attendant_id = Column(Integer, ForeignKey("user.id"))
+    founder_id = Column(Integer, ForeignKey("user.id", ondelete="SET NULL"))
+    attendant_id = Column(Integer, ForeignKey("user.id", ondelete="SET NULL"))
 
     # 관계 설정
     founder = relationship("User", back_populates="chats")

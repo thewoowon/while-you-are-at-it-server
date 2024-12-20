@@ -16,7 +16,7 @@ class Article(Base):
     departure_date_and_time = Column(String, nullable=False)
     number_of_recruits = Column(Integer, nullable=False)
     process_status = Column(String, nullable=False)
-    user_id = Column(Integer, ForeignKey("user.id"))
+    user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"))
 
     # 관계 설정
     user = relationship("User", back_populates="articles")

@@ -11,7 +11,7 @@ class Notification(Base):
     contents = Column(String, nullable=False)
     notification_type = Column(String, nullable=False)
     status = Column(String, nullable=False)
-    user_id = Column(Integer, ForeignKey("user.id"))
+    user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"))
 
     # 관계 설정
-    user = relationship("User")
+    user = relationship("User", back_populates="notifications")

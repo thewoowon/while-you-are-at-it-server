@@ -9,7 +9,7 @@ class Image(Base):
 
     url = Column(String, nullable=False)
     image_type = Column(String, nullable=False)
-    order_id = Column(Integer, ForeignKey("order.id"))
+    order_id = Column(Integer, ForeignKey("order.id", ondelete="CASCADE"))
 
     # 관계 설정
     order = relationship("Order", back_populates="images")

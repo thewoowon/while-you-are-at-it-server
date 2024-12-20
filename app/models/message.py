@@ -9,8 +9,8 @@ class Message(Base):
 
     message = Column(String, nullable=False)
     sequence = Column(Integer, nullable=False)
-    sender_id = Column(Integer, ForeignKey("user.id"))
-    chat_id = Column(Integer, ForeignKey("chat.id"))
+    sender_id = Column(Integer, ForeignKey("user.id", ondelete="SET NULL"))
+    chat_id = Column(Integer, ForeignKey("chat.id", ondelete="CASCADE"))
 
     # 관계 설정
     sender = relationship("User")

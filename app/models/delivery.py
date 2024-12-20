@@ -9,8 +9,8 @@ class Delivery(Base):
 
     request_date = Column(String, nullable=False)
     request_time = Column(String, nullable=False)
-    user_id = Column(Integer, ForeignKey("user.id"))
-    article_id = Column(Integer, ForeignKey("article.id"))
+    user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"))
+    article_id = Column(Integer, ForeignKey("article.id", ondelete="CASCADE"))
 
     # 관계 설정
     user = relationship("User")

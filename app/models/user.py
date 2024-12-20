@@ -15,6 +15,8 @@ class User(Base):
     src = Column(String, nullable=True)
 
     # 관계 설정
+    orders = relationship("Order", back_populates="user")
     articles = relationship("Article", back_populates="user")
     chats = relationship("Chat", back_populates="founder")
     notifications = relationship("Notification", back_populates="user")
+    
