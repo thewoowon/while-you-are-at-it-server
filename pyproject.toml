@@ -17,6 +17,7 @@ python-decouple = "^3.8"
 alembic = "^1.14.0"
 aiosqlite = "^0.20.0"
 greenlet = "^3.1.1"
+requests = "^2.32.3"
 
 
 [build-system]
