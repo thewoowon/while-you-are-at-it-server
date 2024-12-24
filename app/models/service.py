@@ -17,3 +17,4 @@ class Service(Base):
 
     # 관계 설정
     store = relationship("Store")
+    orders = relationship("Order", back_populates="service")

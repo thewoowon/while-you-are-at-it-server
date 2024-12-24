@@ -10,7 +10,15 @@ class Chat(Base):
     founder_id = Column(Integer, ForeignKey("user.id", ondelete="SET NULL"))
     attendant_id = Column(Integer, ForeignKey("user.id", ondelete="SET NULL"))
 
-    # 관계 설정
-    founder = relationship("User", back_populates="chats")
-    attendant = relationship("User")
+    # 관계 설정: foreign_keys에 실제 컬럼 객체 사용
+    founder = relationship(
+        "User",
+        back_populates="created_chats",
+        foreign_keys=[founder_id]  # 문자열이 아닌 컬럼 객체
+    )
+    attendant = relationship(
+        "User",
+        back_populates="attended_chats",
+        foreign_keys=[attendant_id]  # 문자열이 아닌 컬럼 객체
+    )
     messages = relationship("Message", back_populates="chat")
