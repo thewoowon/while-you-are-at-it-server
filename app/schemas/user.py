@@ -10,7 +10,7 @@ class UserBase(BaseModel):
     # 회원가입 시 필수
     email: str
     # 회원가입 시 필수
-    phone_number: str
+    phone_number: Optional[str] = None
     address: Optional[str] = None
     src: Optional[str] = None
 
