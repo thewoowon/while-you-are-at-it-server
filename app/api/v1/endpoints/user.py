@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from app.schemas.user import UserCreate, UserUpdate, UserResponse
-from app.services.user_service import create_user, get_user_by_id, update_user
+from app.services.user_service import create_user, get_user_by_id, update_user, get_user_by_nickname, delete_user
 from app.dependencies import get_db
 from app.core.security import get_current_user
 
@@ -23,16 +23,24 @@ def read(user_id: str = Depends(get_current_user), db: Session = Depends(get_db)
     """
     return get_user_by_id(db=db, user_id=user_id)
 
+# nickname 중복체크
 
+
+@router.get("/nickname/{nickname}")
+def check_nickname(nickname: str, db: Session = Depends(get_db)):
+    """
+    Check if the nickname is already taken
+    """
+    return get_user_by_nickname(db=db, nickname=nickname)
+
+
+# user_id: str = Depends(get_current_user),
 @router.put("/me", response_model=UserResponse)
-def update(user: UserUpdate, user_id: str = Depends(get_current_user), db: Session = Depends(get_db)):
+async def update(request: Request, db: Session = Depends(get_db)):
     """
     Update user by ID
     """
-    db_user = get_user_by_id(db=db, user_id=user_id)
-    if not db_user:
-        raise HTTPException(status_code=404, detail="User not found")
-    return update_user(db=db, user=user)
+    return await update_user(db=db, user_id=1, request=request)
 
 
 @router.delete("/me")
@@ -40,9 +48,4 @@ def delete(user_id: str = Depends(get_current_user), db: Session = Depends(get_d
     """ 
     Delete user by ID
     """
-    db_user = get_user_by_id(db=db, user_id=user_id)
-    if not db_user:
-        raise HTTPException(status_code=404, detail="User not found")
-    db.delete(db_user)
-    db.commit()
-    return {"message": "User deleted successfully"}
+    return delete_user(db=db, user_id=user_id)
