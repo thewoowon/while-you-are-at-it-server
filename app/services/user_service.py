@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, Request
 from sqlalchemy.orm import Session
 from app.models.user import User
 from app.schemas.user import UserCreate, UserUpdate
@@ -18,7 +18,11 @@ def create_user(db: Session, user: UserCreate):
     return db_user
 
 
-def update_user(db: Session, user_id: int, user: UserUpdate):
+async def update_user(db: Session, user_id: int, request: Request):
+
+    context = await request.json()
+    user = UserUpdate(**context)
+
     db_user = db.query(User).filter(User.id == user_id).first()
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -46,7 +50,16 @@ def get_user_by_id(db: Session, user_id: int):
     return user
 
 
+def get_user_by_nickname(db: Session, nickname: str):
+    user = db.query(User).filter(User.nickname == nickname).first()
+    if not user:
+        return JSONResponse(content={
+            "message": "Nickname is available", "is_available": True}, status_code=200)
+    return JSONResponse(content={"message": "Nickname is already taken", "is_available": False}, status_code=200)
+
+
 def get_user_by_email(db: Session, email: str):
+    print("Email:", email)
     user = db.query(User).filter(User.email == email).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
