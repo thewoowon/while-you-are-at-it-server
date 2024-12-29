@@ -20,3 +20,4 @@ class Article(Base):
 
     # 관계 설정
     user = relationship("User", back_populates="articles")
+    address = relationship("Address", uselist=False, back_populates="article")

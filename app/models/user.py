@@ -15,11 +15,13 @@ class User(Base):
     phone_number = Column(String, nullable=False)
     address = Column(String, nullable=True)
     src = Column(String, nullable=True)
+    is_auto_login = Column(Integer, nullable=False, default=0)
 
     # 관계 설정
     orders = relationship("Order", back_populates="user")
     articles = relationship("Article", back_populates="user")
     notifications = relationship("Notification", back_populates="user")
+    tokens = relationship("Token", back_populates="user")
 
     # User가 생성한 채팅방 (founder)
     created_chats = relationship(

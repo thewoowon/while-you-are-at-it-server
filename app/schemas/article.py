@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
+from app.schemas.address import AddressBase
 
 
 class ArticleBase(BaseModel):
@@ -33,6 +34,7 @@ class ArticleUpdate(BaseModel):
 
 class ArticleResponse(ArticleBase):
     id: int
+    address: Optional[AddressBase]
 
     class Config:
         from_attributes = True
