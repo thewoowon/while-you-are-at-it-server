@@ -1,8 +1,9 @@
 
-from fastapi import HTTPException, Request
+from fastapi import HTTPException, Request, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from app.services.user_service import create_user
+from app.core.security import decode_token
 import requests
 import jwt
 from datetime import datetime, timedelta, timezone
@@ -16,6 +17,7 @@ from settings import (
 )
 from app.models.user import User
 from app.schemas.user import UserCreate
+from app.models.token import Token
 
 
 def create_access_token(data: dict, expires_delta: timedelta):
@@ -36,21 +38,11 @@ def create_refresh_token(data: dict, expires_delta: timedelta):
     return encoded_jwt
 
 
-def verify_token(provider: str, access_token: str):
-    if provider == "google":
-        return google_auth(access_token)
-    elif provider == "naver":
-        return naver_auth(access_token)
-    elif provider == "kakao":
-        return kakao_auth(access_token)
-    else:
-        raise HTTPException(status_code=400, detail="Invalid provider")
-
-
 async def google_auth(request: Request, db: Session):
     try:
         data = await request.json()
         id_token = data.get("id_token")
+        is_auto_login = data.get("is_selected")
 
         if not id_token:
             raise HTTPException(status_code=400, detail="ID token is required")
@@ -86,6 +78,7 @@ async def google_auth(request: Request, db: Session):
                     phone_number="",
                     address="",
                     src=DEFAULT_PROFILE_PIC,
+                    is_auto_login=is_auto_login,
                 ),
             )
 
@@ -94,10 +87,10 @@ async def google_auth(request: Request, db: Session):
         refresh_token_expires = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
 
         access_token = create_access_token(
-            data={"sub": user.email}, expires_delta=access_token_expires
+            data={"sub": user.email, "user_id": user.id}, expires_delta=access_token_expires
         )
         refresh_token = create_refresh_token(
-            data={"sub": user.email}, expires_delta=refresh_token_expires
+            data={"sub": user.email, "user_id": user.id}, expires_delta=refresh_token_expires
         )
 
         # 사용자 데이터 및 토큰 반환
@@ -145,3 +138,46 @@ def kakao_auth(access_token: str):
         raise HTTPException(status_code=400, detail="Invalid token")
     user_info = response.json()
     return JSONResponse(content={"user": user_info}, status_code=200)
+
+
+def refresh_token_func(request: Request, db: Session):
+    try:
+        # 1. Refresh Token 디코딩 및 검증 -> 토큰이 유효하지 않거나 만료된 경우 예외 발생
+        payload = decode_token(request.refresh_token)
+        user_id = payload.get("user_id")
+
+        if user_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid refresh token"
+            )
+
+        # token과 user_id를 이용하여 DB에서 refresh_token 조회
+        token_obj = db.query(Token).filter(
+            Token.user_id == user_id and Token.refresh_token == request.refresh_token).first()
+
+        if not token_obj:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid refresh token"
+            )
+
+        if not token_obj.is_active:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Inactive refresh token"
+            )
+
+        # 2. 새로운 Access Token 발급
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(
+            data={"user_id": user_id}, expires_delta=access_token_expires
+        )
+
+        return JSONResponse(content={"access_token": access_token}, status_code=200)
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired refresh token"
+        )

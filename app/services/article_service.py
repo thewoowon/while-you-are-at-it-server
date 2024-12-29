@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.models.article import Article
 from app.schemas.article import ArticleCreate, ArticleUpdate, ArticleResponse
 from fastapi.responses import JSONResponse
+from app.models.address import Address
 
 
 def create_article(db: Session, user_id: str, article: ArticleCreate):
@@ -22,6 +23,17 @@ def create_article(db: Session, user_id: str, article: ArticleCreate):
     db.add(db_article)
     db.commit()
     db.refresh(db_article)
+
+    # 역기서 address를 생성하고 article에 연결
+    # 여기서 다음 카카오 검색
+
+    db_address = Address(
+        address_string=article.pick_up_location,
+        postal_code="",
+        latitude="",
+        longitude="",
+        article_id=db_article.id
+    )
 
     return ArticleResponse.model_validate(db_article)
 
@@ -63,7 +75,7 @@ def get_article_by_id(db: Session, article_id: int):
 def get_article_by_user_id(db: Session, user_id: int):
     articles = db.query(Article).filter(Article.user_id == user_id).all()
     if not articles:
-        raise HTTPException(status_code=404, detail="Article not found")
+        return []
     return [ArticleResponse.model_validate(article) for article in articles]
 
 
@@ -71,5 +83,5 @@ def get_article_by_location(db: Session, location: list[str]):
     articles = db.query(Article).filter(
         Article.pick_up_location == location).all()
     if not articles:
-        raise HTTPException(status_code=404, detail="Article not found")
+        return []
     return [ArticleResponse.model_validate(article) for article in articles]
